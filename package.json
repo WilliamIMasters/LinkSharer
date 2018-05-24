@@ -4,16 +4,18 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build-sass": "sass scss/custom.scss public/css/custom.css"
   },
   "repository": {
-     "type": "git",
-     "url": "https://github.com/sidskater/LinkSharer"
+    "type": "git",
+    "url": "https://github.com/sidskater/LinkSharer"
   },
   "author": "William Masters",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.18.3",
+    "bootstrap": "^4.1.1",
     "ejs": "^2.6.1",
     "express": "^4.16.3",
     "sqlite3": "^4.0.0"

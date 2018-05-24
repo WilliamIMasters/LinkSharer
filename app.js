@@ -11,6 +11,7 @@ const port = 80;
 
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
+app.use(express.static(__dirname + "/node_modules/bootstrap/dist"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.listen(port);
 
@@ -73,7 +74,7 @@ function get404HTML(req,res) {
    res.send("404 Error");
 }
 
-function buildHomePage() {
+function buildHomePage(req,res) {
    res.render("homePage");
 }
 
