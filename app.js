@@ -9,7 +9,7 @@ const favicon = require("serve-favicon");
 const sql = require("sqlite3").verbose();
 const db = new sql.Database("db/posts.db");
 
-const port = 80;
+const port = 21;
 
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
