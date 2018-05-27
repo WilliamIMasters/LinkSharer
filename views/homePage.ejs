@@ -1,7 +1,8 @@
 <!doctype html>
 <html lang="en">
+
    <head>
-      <title> Home </title>
+      <title> Linker </title>
       <!-- Meta Tags -->
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -16,6 +17,7 @@
 
 
    </head>
+
    <body>
       <!-- NavBar -->
       <header>
@@ -25,7 +27,7 @@
 
          <nav class="navbar navbar-expand-sm navbar-dark bg-dark" data-toggle="sticky-onscroll">
             <div class="container">
-               <a class="navbar-brand mr-3" href="/">LinkSharer</a>
+               <a class="navbar-brand mr-3" href="/">Linker</a>
                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#myNavbar" aria-controls="myNavbar" aria-expanded="false" aria-label="Toggle navigation">
                   <span class="navbar-toggler-icon"></span>
                </button>
@@ -64,13 +66,12 @@
 
 
       <!-- Main Page -->
-      <main id="wrap">
+      <main>
          <div id="page" class="container bg-light">
             <h1>Front Page!</h1>
 
 
             <div id="postContainer">
-
 
 
                <% posts.forEach(function(post) { %>
@@ -80,7 +81,9 @@
                      </div>
                      <a href="../post/<%= post.postid %>"><img class="card-img-top" src="<%= post.link %>" style="height: 255px;" alt="Opps"></a>
                      <div class="card-body py-2">
-                        <p class="card-text mb-2 text-truncate"><%= post.desc %></p>
+                        <p class="card-text mb-2 text-truncate">
+                           <%= post.desc %>
+                        </p>
                      </div>
                      <div class="bg-dark rounded-bottom card-body py-2 text-light text-center">
                         <ul class="list-unstyled list-inline font-small mb-0">
@@ -89,33 +92,21 @@
                         </ul>
                      </div>
                   </div>
-               <% }); %>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                  <% }); %>
 
             </div>
          </div>
       </main>
 
-
       <!-- Footer -->
-      <footer class="bg-dark text-light">
+      <footer class="text-light container-fluid bg-dark">
          <div class="container py-2">
             text
          </div>
+
+
       </footer>
+
 
 
 
@@ -131,4 +122,5 @@
       <!-- Custom Javascript -->
       <script src="../scripts/JS.js"></script>
    </body>
+
 </html>
