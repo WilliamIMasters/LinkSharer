@@ -4,6 +4,7 @@ const ejs = require("ejs");
 const url = require("url");
 const bodyParser = require('body-parser');
 const moment = require("moment");
+const favicon = require("serve-favicon");
 
 const sql = require("sqlite3").verbose();
 const db = new sql.Database("db/posts.db");
@@ -14,7 +15,7 @@ app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
 app.use(express.static(__dirname + "/node_modules/bootstrap/dist"));
 app.use(express.static(__dirname + "/node_modules/open-iconic"));
-// app.use(express.static(__dirname + "/node_modules/moment/min"));
+app.use(favicon(__dirname + "/Images/favicon.png"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.listen(port);
 
