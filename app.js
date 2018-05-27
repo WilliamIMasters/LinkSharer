@@ -12,6 +12,7 @@ const port = 80;
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
 app.use(express.static(__dirname + "/node_modules/bootstrap/dist"));
+app.use(express.static(__dirname + "/node_modules/open-iconic"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.listen(port);
 
@@ -25,8 +26,12 @@ app.get("/upload", function(req, res, next) {
    res.render("upload");
 });
 
+app.get("/search", function(req, res, next) {
+   res.render("search");
+});
+
 app.post("/upload", function(req, res) {
-   console.log(req.body);
+   //console.log(req.body);
    let data = req.body;
    if(validateData(data)) {
       uploadToDB(data);
@@ -42,8 +47,8 @@ app.get("/post/:id", function(req, res) {
          res.send("Database Error");
       } else {
          if(row != null) {
-            console.log("ROW: " + row);
-            console.log(`Title: ${row.title}, Desc: ${row.desc}, link: ${row.link}`);
+            //console.log("ROW: " + row);
+            //console.log(`Title: ${row.title}, Desc: ${row.desc}, link: ${row.link}`);
             res.render("post", {title: row.title, desc: row.desc, link: row.link}); //row.id + row.image
          } else {
             get404HTML(req,res);
@@ -53,16 +58,15 @@ app.get("/post/:id", function(req, res) {
    });
 });
 
-app.get("/test", function(req, res) {
-   let link = "image.png";
-   if(link.substring(link.length -4).toLowerCase() == ".png" || link.substring(link.length -4).toLowerCase() == ".jpg" || link.substring(link.length -5).toLowerCase() == ".jpeg") {
-      res.send("image");
-   } else {
-      res.send("link");
-   }
-
-
-   res.send("yes");
+app.get("/random", function(req, res) {
+   db.get("SELECT postid FROM post ORDER BY random() LIMIT 1;", function(err, row) {
+      if(err != null) {
+         console.log("An error has occured getting a random row from the database: " + err);
+         res.send("Database Error");
+      } else {
+         res.redirect("/post/" + row.postid);
+      }
+   })
 });
 
 // Must be last
@@ -88,7 +92,7 @@ function uploadToDB(data) {
 
    do {
       id = generateRandomID();
-      console.log("id: " + id);
+      //console.log("id: " + id);
    } while((checkPostExists(id)));
 
    let title = data.title;

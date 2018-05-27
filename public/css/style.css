@@ -1,0 +1,11 @@
+#postContainer {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   flex-wrap: wrap;
+}
+
+.post {
+   display: inline-block;
+   margin: 8px;
+}
