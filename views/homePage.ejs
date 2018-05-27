@@ -1,7 +1,8 @@
 <!doctype html>
 <html lang="en">
    <head>
-      <!-- Required meta tags -->
+      <title> Home </title>
+      <!-- Meta Tags -->
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -11,7 +12,9 @@
       <link rel="stylesheet" href="../css/style.css">
       <link rel="stylesheet" href="../font/css/open-iconic-bootstrap.css">
 
-      <title> Home </title>
+      <!-- Javascript -->
+
+
    </head>
    <body>
       <!-- NavBar -->
@@ -69,23 +72,36 @@
             <div id="postContainer">
 
 
-               <% for(let i=0; i < 100; i++) { %>
+
+               <% posts.forEach(function(post) { %>
                   <div class="card post" style="width: 16rem">
                      <div class="card-body py-2 bg-dark text-light">
-                        <h5 class="card-title mb-0 text-center"><a href="#" class="text-light">Post title</a></h5>
+                        <h5 class="card-title mb-0 text-center"><a href="../post/<%= post.postid %>" class="text-light"><%= post.title %></a></h5>
                      </div>
-                     <a href="#"><img class="card-img-top" src="../images/testImg.jpg" style="height: 255px;" alt="Opps"></a>
+                     <a href="../post/<%= post.postid %>"><img class="card-img-top" src="<%= post.link %>" style="height: 255px;" alt="Opps"></a>
                      <div class="card-body py-2">
-                        <p class="card-text mb-2 text-truncate"> Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets  containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum </p>
+                        <p class="card-text mb-2 text-truncate"><%= post.desc %></p>
                      </div>
                      <div class="bg-dark rounded-bottom card-body py-2 text-light text-center">
                         <ul class="list-unstyled list-inline font-small mb-0">
-                           <li class="list-inline-item"><span class="oi oi-arrow-thick-top"></span><span class="oi oi-arrow-thick-bottom"></span> <span>5</span></li>
-                           <li class="list-inline-item"><span class="oi oi-clock"></span> <span>12/5/18</span></li>
+                           <li class="list-inline-item"><span class="oi oi-arrow-thick-top"></span><span class="oi oi-arrow-thick-bottom"></span> <span><%= post.upVotes - post.downVotes %></span></li>
+                           <li class="list-inline-item"><span class="oi oi-clock"></span> <span><%= post.fromNow %></span></li>
                         </ul>
                      </div>
                   </div>
-               <% } %>
+               <% }); %>
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

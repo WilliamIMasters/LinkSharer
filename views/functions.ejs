@@ -1,0 +1,11 @@
+<%
+timeStampToDate = function(timestamp) {
+   let date = new Date(timestamp*1000);
+   let hours = date.getHours();
+   let minutes = "0" + date.getMinutes();
+   let seconds = "0" + date.getSeconds();
+
+   let formattedTime = hours + ":" + minutes.substring(-2) + ":" + seconds.substring(-2);
+   return formattedTime;
+}
+%>

@@ -3,6 +3,7 @@ const app = express();
 const ejs = require("ejs");
 const url = require("url");
 const bodyParser = require('body-parser');
+const moment = require("moment");
 
 const sql = require("sqlite3").verbose();
 const db = new sql.Database("db/posts.db");
@@ -13,6 +14,7 @@ app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
 app.use(express.static(__dirname + "/node_modules/bootstrap/dist"));
 app.use(express.static(__dirname + "/node_modules/open-iconic"));
+// app.use(express.static(__dirname + "/node_modules/moment/min"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.listen(port);
 
@@ -21,7 +23,19 @@ app.get("/", function(req, res) {
    buildHomePage(req,res);
 });
 function buildHomePage(req,res) {
-   res.render("homePage");
+   db.all("SELECT * FROM post ORDER BY postTimeStamp DESC LIMIT 52;", function(err, rows) {
+      if(err != null) {
+         console.log("Database error getting data for front page: " + err);
+      } else {
+         //console.log(rows);
+         rows.forEach(function(row) {
+            row["fromNow"] = moment(row.postTimeStamp).fromNow();
+         });
+         res.render("homePage", {posts: rows});
+      }
+   });
+
+
 }
 
 
@@ -65,7 +79,7 @@ app.get("/random", function(req, res) {
    db.get("SELECT postid FROM post ORDER BY random() LIMIT 1;", function(err, row) {
       if(err != null) {
          console.log("An error has occured getting a random row from the database: " + err);
-         res.send("Database Error");
+         res.render("500error");
       } else {
          res.redirect("/post/" + row.postid);
       }
