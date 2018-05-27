@@ -15,82 +15,91 @@
    </head>
    <body>
       <!-- NavBar -->
-      <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
-         <div class="container">
-            <a class="navbar-brand mr-3" href="/">LinkSharer</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#myNavbar" aria-controls="myNavbar" aria-expanded="false" aria-label="Toggle navigation">
-               <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="myNavbar">
-               <ul class="navbar-nav mr-auto">
-                  <li class="nav-item active mr-3">
-                     <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
-                  </li>
-                  <li class="nav-item mr-3">
-                     <a class="nav-link" href="/upload">Upload</a>
-                  </li>
-                  <li class="nav-item mr-3">
-                     <a class="nav-link" href="/random">random</a>
-                  </li>
-                  <li class="nav-item mr-3">
-                     <a class="nav-link" href="/search">Search</a>
-                  </li>
-               </ul>
-               <ul class="navbar-nav">
-                  <li class="nav-item dropdown">
-                     <a class="nav-link dropdown-toggle" href="/" id="dropdown07" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Account</a>
-                     <div class="dropdown-menu" aria-labelledby="dropdown07">
-                        <a class="dropdown-item" href="#">Sorry,</a>
-                        <a class="dropdown-item" href="#">this feature</a>
-                        <a class="dropdown-item" href="#">hasn't been</a>
-                        <a class="dropdown-item" href="#">implemented yet</a>
-                     </div>
-                  </li>
-               </ul>
-            </div>
+      <header>
+         <div class="jumbotron mb-0">
+            <h1 class="display-4">Alert!</h1>
          </div>
-      </nav>
+
+         <nav class="navbar navbar-expand-sm navbar-dark bg-dark" data-toggle="sticky-onscroll">
+            <div class="container">
+               <a class="navbar-brand mr-3" href="/">LinkSharer</a>
+               <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#myNavbar" aria-controls="myNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+               </button>
+
+               <div class="collapse navbar-collapse" id="myNavbar">
+                  <ul class="navbar-nav mr-auto">
+                     <li class="nav-item active mr-3">
+                        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+                     </li>
+                     <li class="nav-item mr-3">
+                        <a class="nav-link" href="/upload">Upload</a>
+                     </li>
+                     <li class="nav-item mr-3">
+                        <a class="nav-link" href="/random">random</a>
+                     </li>
+                     <li class="nav-item mr-3">
+                        <a class="nav-link" href="/search">Search</a>
+                     </li>
+                  </ul>
+                  <ul class="navbar-nav">
+                     <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="/" id="dropdown07" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Account</a>
+                        <div class="dropdown-menu" aria-labelledby="dropdown07">
+                           <a class="dropdown-item" href="#">Sorry,</a>
+                           <a class="dropdown-item" href="#">this feature</a>
+                           <a class="dropdown-item" href="#">hasn't been</a>
+                           <a class="dropdown-item" href="#">implemented yet</a>
+                        </div>
+                     </li>
+                  </ul>
+               </div>
+            </div>
+         </nav>
+      </header>
 
 
 
       <!-- Main Page -->
-      <div class="container bg-light">
-         <h1>Front Page!</h1>
+      <main id="wrap">
+         <div id="page" class="container bg-light">
+            <h1>Front Page!</h1>
 
 
-         <div id="postContainer">
+            <div id="postContainer">
 
 
-            <div class="card post" style="width: 16rem">
-               <div class="card-body py-2">
-                  <h5 class="card-title mb-0 text-center">Post title</h5>
-               </div>
-               <img class="card-img-top" src="../images/testImg.jpg"></img>
-               <div class="card-body py-2">
-                  <p class="card-text mb-2 text-truncate"> Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum </p>
-               </div>
-               <div class="bg-dark rounded-bottom card-body py-2 text-light text-center">
-                  <ul class="list-unstyled list-inline font-small mb-0">
-                     <li class="list-inline-item"><span class="oi oi-arrow-thick-top"></span><span class="oi oi-arrow-thick-bottom"></span> <span>5</span></li>
-                     <li class="list-inline-item"><span class="oi oi-clock"></span> <span>12/5/18</span></li>
-                  </ul>
-               </div>
+               <% for(let i=0; i < 100; i++) { %>
+                  <div class="card post" style="width: 16rem">
+                     <div class="card-body py-2 bg-dark text-light">
+                        <h5 class="card-title mb-0 text-center"><a href="#" class="text-light">Post title</a></h5>
+                     </div>
+                     <a href="#"><img class="card-img-top" src="../images/testImg.jpg" style="height: 255px;" alt="Opps"></a>
+                     <div class="card-body py-2">
+                        <p class="card-text mb-2 text-truncate"> Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets  containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum </p>
+                     </div>
+                     <div class="bg-dark rounded-bottom card-body py-2 text-light text-center">
+                        <ul class="list-unstyled list-inline font-small mb-0">
+                           <li class="list-inline-item"><span class="oi oi-arrow-thick-top"></span><span class="oi oi-arrow-thick-bottom"></span> <span>5</span></li>
+                           <li class="list-inline-item"><span class="oi oi-clock"></span> <span>12/5/18</span></li>
+                        </ul>
+                     </div>
+                  </div>
+               <% } %>
+
+
+
             </div>
-
-
-
          </div>
-
-      </div>
+      </main>
 
 
       <!-- Footer -->
-      <div class="w-100 bg-dark">
-         <div class="container">
-            test
+      <footer class="bg-dark text-light">
+         <div class="container py-2">
+            text
          </div>
-      </div>
+      </footer>
 
 
 
@@ -98,10 +107,12 @@
 
 
 
-      <!-- Optional JavaScript -->
+
       <!-- jQuery first, then Popper.js, then Bootstrap JS -->
       <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
       <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+      <!-- Custom Javascript -->
+      <script src="../scripts/JS.js"></script>
    </body>
 </html>

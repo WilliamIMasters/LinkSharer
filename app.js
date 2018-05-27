@@ -20,6 +20,9 @@ app.listen(port);
 app.get("/", function(req, res) {
    buildHomePage(req,res);
 });
+function buildHomePage(req,res) {
+   res.render("homePage");
+}
 
 
 app.get("/upload", function(req, res, next) {
@@ -76,10 +79,6 @@ app.all("*", function(req,res) {
 
 function get404HTML(req,res) {
    res.send("404 Error");
-}
-
-function buildHomePage(req,res) {
-   res.render("homePage");
 }
 
 
