@@ -1,21 +1,90 @@
-<html>
+<body>
    <head>
-      <title><%= title %></title>
-      <link href="../css/style.css" rel="stylesheet" type="text/css">
+      <title> <%= title %> </title>
+      <!-- Meta Tags -->
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <!-- CSS -->
+      <link rel="stylesheet" href="../css/bootstrap.css">
+      <link rel="stylesheet" href="../css/custom.css">
+      <link rel="stylesheet" href="../css/style.css">
+      <link rel="stylesheet" href="../font/css/open-iconic-bootstrap.css">
    </head>
    <body>
-      <h1><%= title %></h1>
-      <p><%= desc %></p>
 
-      <% if(link.substring(link.length -4).toLowerCase() == ".png" || link.substring(link.length -4).toLowerCase() == ".jpg" || link.substring(link.length -5).toLowerCase() == ".jpeg"){ %>
-         <h1>image</h1>
-         <img src="<%= link %>"></img>
-      <% } else{ %>
-         <h1>link</h1>
-         <a href="<%= link %>"><%= link %></a>
-      <% } %>
-      <!-- <img src="<%= link %>"></img> -->
+      <!-- NavBar -->
+      <header>
+         <div class="jumbotron mb-0">
+            <h1 class="display-4">Alert!</h1>
+         </div>
+
+         <nav class="navbar navbar-expand-sm navbar-dark bg-dark" data-toggle="sticky-onscroll">
+            <div class="container">
+               <a class="navbar-brand mr-3" href="/">Linker</a>
+               <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#myNavbar" aria-controls="myNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+               </button>
+
+               <div class="collapse navbar-collapse" id="myNavbar">
+                  <ul class="navbar-nav mr-auto">
+                     <li class="nav-item mr-3">
+                        <a class="nav-link" href="/">Home</a>
+                     </li>
+                     <li class="nav-item mr-3">
+                        <a class="nav-link" href="/upload">Upload</a>
+                     </li>
+                     <li class="nav-item mr-3">
+                        <a class="nav-link" href="/random">random</a>
+                     </li>
+                     <li class="nav-item mr-3">
+                        <a class="nav-link" href="/search">Search</a>
+                     </li>
+                  </ul>
+                  <ul class="navbar-nav">
+                     <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Account</a>
+                        <div class="dropdown-menu" aria-labelledby="dropdown">
+                           <a class="dropdown-item" href="#">Sorry,</a>
+                           <a class="dropdown-item" href="#">this feature</a>
+                           <a class="dropdown-item" href="#">hasn't been</a>
+                           <a class="dropdown-item" href="#">implemented yet</a>
+                        </div>
+                     </li>
+                  </ul>
+               </div>
+            </div>
+         </nav>
+      </header>
+
+      <main>
+         <div id="page" class="container bg-light py-4">
+            <h1><%= title %></h1>
+            <p><%= desc %></p>
+
+            <div class="w-100 d-block">
+               <% if(link.substring(link.length -4).toLowerCase() == ".png" || link.substring(link.length -4).toLowerCase() == ".jpg" || link.substring(link.length -5).toLowerCase() == ".jpeg" || link.substring(link.length -4).toLowerCase() == ".gif"){ %>
+                  <img class="mw-100 d-inline-block" src="<%= link %>"></img>
+               <% } else if(link.substring(link.length -4).toLowerCase() == ".mp4" || link.substring(link.length -5).toLowerCase() == ".webm"){ %>
+                  <video class="w-100 d-inline-block" src="<%= link %>" controls loop></video>
+               <% } else{ %>
+                  <a href="<%= link %>"><%= link %></a>
+               <% } %>
+
+            </div>
+
+
+         </div>
+      </main>
+
+      <!-- Footer -->
+      <footer class="text-light container-fluid bg-dark">
+         <div class="container py-2">
+            text
+         </div>
+
+
+      </footer>
+
+
    </body>
-</html>
-
-<!-- image.png -->
+</body>

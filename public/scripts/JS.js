@@ -1,5 +1,4 @@
 $(document).ready(function() {
-   console.log("JS linked correctly");
    var stickyToggle = function(sticky, stickyWrapper, scrollElement) {
       var stickyHeight = sticky.outerHeight();
       var stickyTop = stickyWrapper.offset().top;

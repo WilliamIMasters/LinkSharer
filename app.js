@@ -5,11 +5,12 @@ const url = require("url");
 const bodyParser = require('body-parser');
 const moment = require("moment");
 const favicon = require("serve-favicon");
+const sha = require("crypto-js/sha256");
 
 const sql = require("sqlite3").verbose();
 const db = new sql.Database("db/posts.db");
 
-const port = 21;
+const port = 80;
 
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
@@ -87,13 +88,37 @@ app.get("/random", function(req, res) {
    })
 });
 
+app.get("/profile/:username", function(req, res) {
+   db.get(`SELECT * FROM Users WHERE username = "${req.params.username}";`, function(err, row) {
+      if(err != null) {
+         console.log("An error has occured getting a user's data from the database: " + err);
+         res.render("500error");
+      } else {
+         if(row != null) {
+            res.render("profile", {displayName: row.displayName, username: row.username, bio: row.bio});
+            // console.log(row);
+         } else {
+            console.log("Null user: " + row);
+            res.send("user does not exist");
+         }
+      }
+   });
+
+
+   //res.render("profile", {displayName: "test", username: req.params.username, bio: "test2"});
+});
+
+app.get("/test", function(req, res) {
+   res.render("postTest");
+});
+
 // Must be last
 app.all("*", function(req,res) {
    get404HTML(req,res);
 });
 
 function get404HTML(req,res) {
-   res.send("404 Error");
+   res.render("404Error");
 }
 
 
