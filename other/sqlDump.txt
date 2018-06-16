@@ -1,0 +1,7 @@
+
+// Gets most recent 52 posts including username and display name
+SELECT post.*, Users.displayName
+FROM post
+INNER JOIN Users ON post.username = Users.username
+ORDER BY postTimeStamp DESC
+LIMIT 52;

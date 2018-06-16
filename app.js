@@ -60,7 +60,7 @@ app.post("/upload", function(req, res) {
 
 
 app.get("/post/:id", function(req, res) {
-   db.get(`SELECT * FROM post WHERE postid = "${req.params.id}";`, function(err, row) {
+   db.get(`SELECT post.*, Users.displayName FROM post INNER JOIN Users on post.username = users.username WHERE postid = "${req.params.id}";`, function(err, row) {
       if(err != null) {
          console.log("An error has occured getting data from the database: " + err);
          res.send("Database Error");
@@ -68,7 +68,7 @@ app.get("/post/:id", function(req, res) {
          if(row != null) {
             //console.log("ROW: " + row);
             //console.log(`Title: ${row.title}, Desc: ${row.desc}, link: ${row.link}`);
-            res.render("post", {title: row.title, desc: row.desc, link: row.link}); //row.id + row.image
+            res.render("post", {title: row.title, desc: row.desc, link: row.link, username: row.username, displayName: row.displayName}); //row.id + row.image
          } else {
             get404HTML(req,res);
             console.log("row is null");
@@ -106,6 +106,19 @@ app.get("/profile/:username", function(req, res) {
 
 
    //res.render("profile", {displayName: "test", username: req.params.username, bio: "test2"});
+});
+
+app.get("/login", function(req,res) {
+   res.render("login");
+});
+
+app.post("/login", function(req,res) {
+   let data = req.body;
+   console.log(data);
+   res.send("test");
+   // setTimeout(function() {
+   //    res.send("test2");
+   // }, 5000);
 });
 
 app.get("/test", function(req, res) {
