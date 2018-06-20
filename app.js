@@ -52,22 +52,26 @@ function buildHomePage(req,res) {
 
 
 app.get("/upload", function(req, res, next) {
-   res.render("upload");
-});
+   if(req.session.username) {
+      res.render("upload");
+   } else {
+      res.redirect("login");
+   }
 
-app.get("/search", function(req, res, next) {
-   res.render("search");
 });
-
 app.post("/upload", function(req, res) {
-   //console.log(req.body);
    let data = req.body;
+   data.username = req.session.username.toString();
    if(validateData(data)) {
-      uploadToDB(data);
+      uploadPostToDB(data);
    }
    res.send("data recived");
 });
 
+
+app.get("/search", function(req, res, next) {
+   res.render("search");
+});
 
 app.get("/post/:id", function(req, res) {
    db.get(`SELECT post.*, Users.displayName FROM post INNER JOIN Users on post.username = users.username WHERE postid = "${req.params.id}";`, function(err, row) {
@@ -121,6 +125,9 @@ app.get("/user/:username", function(req, res) {
 
    //res.render("profile", {displayName: "test", username: req.params.username, bio: "test2"});
 });
+// app.post("/user/:username", function(req, res) {
+//
+// });
 
 app.get("/login", function(req,res) {
    if(req.session.username) {
@@ -205,7 +212,7 @@ function validateUserInput(data) {
    return data;
 }
 
-function uploadToDB(data) {
+function uploadPostToDB(data) {
    let id="";
 
    do {
@@ -219,7 +226,7 @@ function uploadToDB(data) {
    let timeStamp = Date.now();
    let upVotes = 0;
    let downVotes = 0;
-   db.run(`INSERT INTO post (postid, title, link, desc, postTimeStamp, upVotes, downVotes) VALUES ("${id}", "${title}", "${link}", "${desc}", "${timeStamp}", "${upVotes}", "${downVotes}")`);
+   db.run(`INSERT INTO post (postid, title, link, desc, username, postTimeStamp, upVotes, downVotes) VALUES ("${id}", "${title}", "${link}", "${desc}", "${data.username}", "${timeStamp}", "${upVotes}", "${downVotes}")`);
 }
 
 function uploadUserToDB(data) {
