@@ -1,5 +1,19 @@
 <html>
-   <form method="post">
-      <input type="text"></input>
-   </form>
+
+   <head>
+
+   </head>
+
+   <body>
+      <form method="post">
+         <label>Search:</label>
+         <input name="searchTerm" type="text"></input><br/>
+
+         <input type="submit"></input>
+         <% if(!(typeof error == "undefined")) { %>
+            <%= error %>
+         <% } %>
+      </form>
+   </body>
+
 </html>

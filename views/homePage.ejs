@@ -85,17 +85,17 @@
                <% posts.forEach(function(post) { %>
                   <div class="card post" style="width: 16rem">
                      <div class="card-body py-2 bg-dark text-light">
-                        <h5 class="card-title mb-0 text-center"><a href="../post/<%= post.postid %>" class="text-light"><%= post.title %></a></h5>
+                        <h5 class="card-title mb-0 text-center text-truncate"><a href="../post/<%= post.postid %>" class="text-light"><%= post.title %></a></h5>
                      </div>
-                     <a href="../post/<%= post.postid %>">
+                     <a href="../post/<%= post.postid %>" style="height: 255px;">
 
                         <% if(post.link.substring(post.link.length -4).toLowerCase() == ".png" || post.link.substring(post.link.length -4).toLowerCase() == ".jpg" || post.link.substring(post.link.length -5).toLowerCase() == ".jpeg" || post.link.substring(post.link.length -4).toLowerCase() == ".gif"){ %>
-                           <img class="card-img-top" src="<%= post.link %>" style="height: 255px;" alt="Opps">
-                           <% } else if(post.link.substring(post.link.length -4).toLowerCase() == ".mp4" || post.link.substring(post.link.length -5).toLowerCase() == ".webm"){ %>
-                              <video class="card-img-top" src="<%= post.link %>" style="height: 255px;" loop autoplay></video>
-                              <% } else{ %>
-                                 <img class="card-img-top" src="<%= post.link %>" style="height: 255px;" alt="Opps">
-                                 <% } %>
+                           <img class="card-img-top" src="<%= post.link %>" style="height: 255px;" alt="Opps"></img>
+                        <% } else if(post.link.substring(post.link.length -4).toLowerCase() == ".mp4" || post.link.substring(post.link.length -5).toLowerCase() == ".webm"){ %>
+                           <video class="card-img-top" src="<%= post.link %>" style="height: 255px;" loop autoplay></video>
+                        <% } else{ %>
+                           <img class="card-img-top" src="<%= post.link %>" style="height: 255px;" alt="Opps"></img>
+                        <% } %>
 
 
 

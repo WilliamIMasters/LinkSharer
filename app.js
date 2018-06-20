@@ -34,7 +34,6 @@ function buildHomePage(req,res) {
       if(err != null) {
          console.log("Database error getting data for front page: " + err);
       } else {
-         //console.log(rows);
          rows.forEach(function(row) {
             row["fromNow"] = moment(row.postTimeStamp).fromNow();
          });
@@ -42,12 +41,9 @@ function buildHomePage(req,res) {
          if(req.session.username) {
             loginData = {loggedIn: true, username: req.session.username};
          }
-
          res.render("homePage", {posts: rows, loginData: loginData});
       }
    });
-
-
 }
 
 
@@ -71,6 +67,32 @@ app.post("/upload", function(req, res) {
 
 app.get("/search", function(req, res, next) {
    res.render("search");
+});
+app.post("/search", function(req,res) {
+   let searchTerm = validateUserInput(req.body.searchTerm);
+   db.all(`SELECT * FROM post WHERE title LIKE "%${searchTerm}%";`, function(err, rows) {
+      if(err != null) {
+         console.log("An error has occured getting data from the database: " + err);
+         res.send("Database Error");
+      } else {
+         if(rows != null) {
+            console.log("Posts found");
+            console.log("rows: " + rows);
+            let foundPosts = [];
+            rows.forEach(function(row) {
+               console.log("row: " + row);
+               foundPosts.push(row);
+            });
+            if(foundPosts.length == 0) {
+               res.send("No post found");
+            } else {
+               res.send(foundPosts);
+            }
+         } else {
+            req.send("No posts found");
+         }
+      }
+   });
 });
 
 app.get("/post/:id", function(req, res) {
