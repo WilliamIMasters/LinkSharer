@@ -1,14 +1,14 @@
 const express = require("express");
 const app = express();
+const session = require("express-session");
 const ejs = require("ejs");
 const url = require("url");
 const bodyParser = require('body-parser');
 const moment = require("moment");
 const favicon = require("serve-favicon");
-const sha = require("crypto-js/sha256");
-
 const sql = require("sqlite3").verbose();
 const db = new sql.Database("db/posts.db");
+const crypto = require("crypto");
 
 const port = 80;
 
@@ -18,6 +18,11 @@ app.use(express.static(__dirname + "/node_modules/bootstrap/dist"));
 app.use(express.static(__dirname + "/node_modules/open-iconic"));
 app.use(favicon(__dirname + "/Images/favicon.png"));
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(session({
+   secret: "batboi",
+   resave: true,
+   saveUninitialized: true
+}));
 app.listen(port);
 
 
@@ -33,7 +38,12 @@ function buildHomePage(req,res) {
          rows.forEach(function(row) {
             row["fromNow"] = moment(row.postTimeStamp).fromNow();
          });
-         res.render("homePage", {posts: rows});
+         let loginData = {loggedIn: false};
+         if(req.session.username) {
+            loginData = {loggedIn: true, username: req.session.username};
+         }
+
+         res.render("homePage", {posts: rows, loginData: loginData});
       }
    });
 
@@ -68,7 +78,11 @@ app.get("/post/:id", function(req, res) {
          if(row != null) {
             //console.log("ROW: " + row);
             //console.log(`Title: ${row.title}, Desc: ${row.desc}, link: ${row.link}`);
-            res.render("post", {title: row.title, desc: row.desc, link: row.link, username: row.username, displayName: row.displayName}); //row.id + row.image
+            let loginData = {loggedIn: false};
+            if(req.session.username) {
+               loginData = {loggedIn: true, username: req.session.username};
+            }
+            res.render("post", {title: row.title, desc: row.desc, link: row.link, username: row.username, displayName: row.displayName, loginData: loginData}); //row.id + row.image
          } else {
             get404HTML(req,res);
             console.log("row is null");
@@ -88,7 +102,7 @@ app.get("/random", function(req, res) {
    })
 });
 
-app.get("/profile/:username", function(req, res) {
+app.get("/user/:username", function(req, res) {
    db.get(`SELECT * FROM Users WHERE username = "${req.params.username}";`, function(err, row) {
       if(err != null) {
          console.log("An error has occured getting a user's data from the database: " + err);
@@ -109,34 +123,86 @@ app.get("/profile/:username", function(req, res) {
 });
 
 app.get("/login", function(req,res) {
-   res.render("login");
+   if(req.session.username) {
+      res.send("Already logged in");
+   } else {
+      res.render("login");
+   }
 });
 
 app.post("/login", function(req,res) {
-   let data = req.body;
-   console.log(data);
-   res.send("test");
-   // setTimeout(function() {
-   //    res.send("test2");
-   // }, 5000);
+   db.get(`SELECT * FROM users WHERE username = "${req.body.username}"`, function(err, row) {
+      if(err != null) {
+         console.log("An error has occured getting data from the database: " + err);
+         res.render("500error");
+      } else {
+         if(row != null) {
+            console.log(hashPassword(req.body.password));
+            console.log(row.password);
+            if(hashPassword(req.body.password) == row.password) { // successfully logged in
+               req.session.username = row.username;
+               res.redirect("/");
+            } else { // Incorrect password
+               res.render("login",{error: "Invalid password"});
+            }
+         } else { // Incorrect username
+            res.render("login", {error: "Invalid username"});
+         }
+      }
+   });
+});
+
+app.get("/logout", function(req,res) {
+   req.session.destroy(function(err) {
+      if(err) {
+         res.negotiate(err);
+      }
+      res.redirect("/");
+   });
+});
+
+app.get("/register", function(req,res) {
+   res.render("register");
+});
+app.post("/register", function(req,res) {
+   let data = validateUserInput(req.body);
+   db.get(`SELECT username FROM users WHERE username="${data.username}"`, function(err, row) {
+      if(err != null) {
+         console.log("An error has occured getting data from the database: " + err);
+         res.render("500error");
+      } else {
+         if(row != null) {
+            res.render("register", {error: "Username has been taken"});
+         } else {
+            uploadUserToDB(data);
+            res.redirect("/");
+         }
+      }
+   });
+   //
 });
 
 app.get("/test", function(req, res) {
-   res.render("postTest");
+   if(req.session.username) {
+      res.send(req.session.username.toString())
+   } else {
+      res.send("Not logged in");
+   }
 });
 
 // Must be last
 app.all("*", function(req,res) {
-   get404HTML(req,res);
+   res.render("404Error");
 });
 
-function get404HTML(req,res) {
-   res.render("404Error");
-}
 
 
 function validateData(data) {
    return true;
+}
+
+function validateUserInput(data) {
+   return data;
 }
 
 function uploadToDB(data) {
@@ -156,6 +222,10 @@ function uploadToDB(data) {
    db.run(`INSERT INTO post (postid, title, link, desc, postTimeStamp, upVotes, downVotes) VALUES ("${id}", "${title}", "${link}", "${desc}", "${timeStamp}", "${upVotes}", "${downVotes}")`);
 }
 
+function uploadUserToDB(data) {
+   db.run(`INSERT INTO users (username, displayName, password) VALUES ("${data.username}", "${data.username}", "${hashPassword(data.password)}")`);
+}
+
 function generateRandomID(){
    let randomID = "";
    let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -171,4 +241,10 @@ function checkPostExists(id) {
 
 async function checkPostExistsDB(id) {
 
+}
+
+function hashPassword(password) {
+   let hash = crypto.createHash("sha256");
+   hash.update(password);
+   return hash.digest("hex");
 }
