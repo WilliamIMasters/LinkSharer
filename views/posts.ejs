@@ -2,7 +2,7 @@
 <html lang="en">
 
    <head>
-      <title> Linker </title>
+      <title> <%= title %> </title>
       <!-- Meta Tags -->
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -57,15 +57,13 @@
                               <a class="dropdown-item" href="/user/<%= loginData.username %>">My Account</a>
                               <a class="dropdown-item" href="/logout">logout</a>
                            </div>
-                           <% } else{ %>
+                        <% } else{ %>
                               <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Account</a>
                               <div class="dropdown-menu" aria-labelledby="dropdown">
                                  <a class="dropdown-item" href="/login">login</a>
                                  <a class="dropdown-item" href="/register">register</a>
                               </div>
-                              <% } %>
-
-
+                        <% } %>
                      </li>
                   </ul>
                </div>
@@ -78,53 +76,42 @@
       <!-- Main Page -->
       <main>
          <div id="page" class="container bg-light">
-            <h1><%= displayName %></h1>
-            <h4 class="text-muted"> <%= username %> </h4>
+            <h1> <%= title %></h1>
 
-            <p>
-               <%= bio %>
-            </p>
-            <div class="container">
-               <div class="row">
-                  <h3> Recent Posts: </h3>
-               </div>
-               <div class="row">
 
-                  <% recentPosts.forEach(function(post) { %>
-                     <div class="card post" style="width: 16rem">
-                        <div class="card-body py-2 bg-dark text-light">
-                           <h5 class="card-title mb-0 text-center text-truncate"><a href="/post/<%= post.postid %>" class="text-light"><%= post.title %></a></h5>
-                        </div>
-                        <a href="/post/<%= post.postid %>" style="height: 255px;">
+            <div id="postContainer">
 
-                           <% if(post.link.substring(post.link.length -4).toLowerCase() == ".png" || post.link.substring(post.link.length -4).toLowerCase() == ".jpg" || post.link.substring(post.link.length -5).toLowerCase() == ".jpeg" || post.link.substring(post.link.length -4).toLowerCase() == ".gif"){ %>
-                              <img class="card-img-top" src="<%= post.link %>" style="height: 255px;" alt="Opps"></img>
-                              <% } else if(post.link.substring(post.link.length -4).toLowerCase() == ".mp4" || post.link.substring(post.link.length -5).toLowerCase() == ".webm"){ %>
-                                 <video class="card-img-top" src="<%= post.link %>" style="height: 255px;" loop autoplay></video>
-                                 <% } else{ %>
-                                    <img class="card-img-top" src="<%= post.link %>" style="height: 255px;" alt="Opps"></img>
-                                    <% } %>
 
-                        </a>
-                        <div class="card-body py-2" style="height: 48px;">
-                           <p class="card-text mb-2 text-truncate">
-                              <%= post.desc %>
-                           </p>
-                        </div>
-                        <div class="bg-dark rounded-bottom card-body py-2 text-light text-center">
-                           <ul class="list-unstyled list-inline font-small mb-0">
-                              <li class="list-inline-item"><span class="oi oi-arrow-thick-top"></span><span class="oi oi-arrow-thick-bottom"></span> <span><%= post.upVotes - post.downVotes %></span></li>
-                              <li class="list-inline-item"><span class="oi oi-clock"></span> <span><%= post.fromNow %></span></li>
-                           </ul>
-                        </div>
+               <% posts.forEach(function(post) { %>
+                  <div class="card post" style="width: 16rem">
+                     <div class="card-body py-2 bg-dark text-light">
+                        <h5 class="card-title mb-0 text-center text-truncate"><a href="/post/<%= post.postid %>" class="text-light"><%= post.title %></a></h5>
                      </div>
-                     <% }); %>
+                     <a href="/post/<%= post.postid %>" style="height: 255px;">
 
+                        <% if(post.link.substring(post.link.length -4).toLowerCase() == ".png" || post.link.substring(post.link.length -4).toLowerCase() == ".jpg" || post.link.substring(post.link.length -5).toLowerCase() == ".jpeg" || post.link.substring(post.link.length -4).toLowerCase() == ".gif"){ %>
+                           <img class="card-img-top" src="<%= post.link %>" style="height: 255px;" alt="Opps"></img>
+                        <% } else if(post.link.substring(post.link.length -4).toLowerCase() == ".mp4" || post.link.substring(post.link.length -5).toLowerCase() == ".webm"){ %>
+                           <video class="card-img-top" src="<%= post.link %>" style="height: 255px;" loop autoplay></video>
+                        <% } else{ %>
+                           <img class="card-img-top" src="<%= post.link %>" style="height: 255px;" alt="Opps"></img>
+                        <% } %>
 
-               </div>
-               <div class="row">
-                  <a href="/user/<%= username %>/posts" class="text-muted">See all of <%= displayName %>'s posts</a>
-               </div>
+                     </a>
+                     <div class="card-body py-2" style="height: 48px;">
+                        <p class="card-text mb-2 text-truncate">
+                           <%= post.desc %>
+                        </p>
+                     </div>
+                     <div class="bg-dark rounded-bottom card-body py-2 text-light text-center">
+                        <ul class="list-unstyled list-inline font-small mb-0">
+                           <li class="list-inline-item"><span class="oi oi-arrow-thick-top"></span><span class="oi oi-arrow-thick-bottom"></span> <span><%= post.upVotes - post.downVotes %></span></li>
+                           <li class="list-inline-item"><span class="oi oi-clock"></span> <span><%= post.fromNow %></span></li>
+                        </ul>
+                     </div>
+                  </div>
+               <% }); %>
+
             </div>
          </div>
       </main>

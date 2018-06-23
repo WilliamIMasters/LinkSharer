@@ -4,7 +4,7 @@
       <title>
          <%= title %>
       </title>
-      <link href="../css/style.css" rel="stylesheet" type="text/css">
+      <link href="/css/style.css" rel="stylesheet" type="text/css">
    </head>
 
    <body>
@@ -16,13 +16,15 @@
       <% if(link.substring(link.length -4).toLowerCase() == ".png" || link.substring(link.length -4).toLowerCase() == ".jpg" || link.substring(link.length -5).toLowerCase() == ".jpeg" || link.substring(link.length -4).toLowerCase() == ".gif"){ %>
          <h1>image</h1>
          <img src="<%= link %>"></img>
-      <% } else if(link.substring(link.length -4).toLowerCase() == ".mp4" || link.substring(link.length -5).toLowerCase() == ".webm"){ %>
-         <h1>Video</h1>
-         <video src="<%= link %>" controls loop></video>
-      <% } else{ %>
-         <h1>link</h1>
-         <a href="<%= link %>"><%= link %></a>
-      <% } %>
+         <% } else if(link.substring(link.length -4).toLowerCase() == ".mp4" || link.substring(link.length -5).toLowerCase() == ".webm"){ %>
+            <h1>Video</h1>
+            <video src="<%= link %>" controls loop></video>
+            <% } else{ %>
+               <h1>link</h1>
+               <a href="<%= link %>">
+                  <%= link %>
+               </a>
+               <% } %>
                   <!-- <img src="<%= link %>"></img> -->
    </body>
 

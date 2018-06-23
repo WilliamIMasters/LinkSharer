@@ -66,24 +66,28 @@ app.get("/search", function(req, res, next) {
 });
 app.post("/search", function(req,res) {
    let searchTerm = validateUserInput(req.body.searchTerm);
-   db.all(`SELECT * FROM post WHERE title LIKE "%${searchTerm}%";`, function(err, rows) {
+   db.all(`SELECT * FROM post WHERE title LIKE "%${searchTerm}%" ORDER BY postTimeStamp DESC LIMIT 52;`, function(err, rows) {
       if(err != null) {
          console.log("An error has occured getting data from the database: " + err);
          res.send("Database Error");
       } else {
          if(rows != null) {
-            console.log("Posts found");
-            console.log("rows: " + rows);
-            let foundPosts = [];
-            rows.forEach(function(row) {
-               console.log("row: " + row);
-               foundPosts.push(row);
-            });
-            if(foundPosts.length == 0) {
-               res.send("No post found");
+            if(rows.length == 0) {
+               res.send("No posts");
             } else {
-               res.send(foundPosts);
+               res.render("posts", {posts: getTimesFromNow(rows), loginData: getLoginData(req), title: ("Search: \"" + searchTerm + "\"")});
             }
+
+            // let foundPosts = [];
+            // rows.forEach(function(row) {
+            //    console.log("row: " + row);
+            //    foundPosts.push(row);
+            // });
+            // if(foundPosts.length == 0) {
+            //    res.send("No post found");
+            // } else {
+            //    res.send(foundPosts);
+            // }
          } else {
             req.send("No posts found");
          }
@@ -151,7 +155,20 @@ app.get("/user/:username", function(req, res) {
 });
 
 app.get("/user/:username/posts",function(req,res) {
-   res.send(req.params.username + "'s posts");
+   db.all(`SELECT * FROM post WHERE username = "${req.params.username}" ORDER BY postTimeStamp DESC LIMIT 52`, function(err, rows) {
+      if(err != null) {
+         console.log("An error has occured getting a all of a users posts from the database: " + err);
+         res.render("500error");
+      } else {
+         if(rows.length == 0) {
+            res.render("posts", {title: (req.params.username + "s posts"), posts: null, loginData: getLoginData(req)});
+         } else {
+            //res.render("posts", {title: (req.params.username + "s posts"), posts: getTimesFromNow(rows), loginData: getLoginData(req)});
+            res.render("posts", {posts: getTimesFromNow(rows), loginData: getLoginData(req), title: (req.params.username + "'s posts")});
+         }
+      }
+   });
+   //res.render("posts", {title: (req.params.username + "'s posts")});
 });
 
 
@@ -288,4 +305,11 @@ function getLoginData(req) {
       loginData = {loggedIn: true, username: req.session.username};
    }
    return loginData;
+}
+
+function getTimesFromNow(rows) {
+   rows.forEach(function(row) {
+      row["fromNow"] = moment(row.postTimeStamp).fromNow();
+   });
+   return rows;
 }
