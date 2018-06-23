@@ -133,6 +133,9 @@ app.get("/user/:username", function(req, res) {
                   res.render("500error");
                } else {
                   if(rows != null && rows.length > 0) {
+                     rows.forEach(function(row) {
+                        row["fromNow"] = moment(row.postTimeStamp).fromNow();
+                     });
                      res.render("profile", {displayName: row.displayName, username: row.username, bio: row.bio, loginData: getLoginData(req), recentPosts: rows});
                   } else {
                      res.render("profile", {displayName: row.displayName, username: row.username, bio: row.bio, loginData: getLoginData(req), recentPosts: null});
@@ -167,8 +170,8 @@ app.post("/login", function(req,res) {
          res.render("500error");
       } else {
          if(row != null) {
-            console.log(hashPassword(req.body.password));
-            console.log(row.password);
+            // console.log(hashPassword(req.body.password));
+            // console.log(row.password);
             if(hashPassword(req.body.password) == row.password) { // successfully logged in
                req.session.username = row.username;
                res.redirect("/");
