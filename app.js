@@ -37,11 +37,7 @@ function buildHomePage(req,res) {
          rows.forEach(function(row) {
             row["fromNow"] = moment(row.postTimeStamp).fromNow();
          });
-         let loginData = {loggedIn: false};
-         if(req.session.username) {
-            loginData = {loggedIn: true, username: req.session.username};
-         }
-         res.render("homePage", {posts: rows, loginData: loginData});
+         res.render("homePage", {posts: rows, loginData: getLoginData(req)});
       }
    });
 }
@@ -104,11 +100,7 @@ app.get("/post/:id", function(req, res) {
          if(row != null) {
             //console.log("ROW: " + row);
             //console.log(`Title: ${row.title}, Desc: ${row.desc}, link: ${row.link}`);
-            let loginData = {loggedIn: false};
-            if(req.session.username) {
-               loginData = {loggedIn: true, username: req.session.username};
-            }
-            res.render("post", {title: row.title, desc: row.desc, link: row.link, username: row.username, displayName: row.displayName, loginData: loginData}); //row.id + row.image
+            res.render("post", {title: row.title, desc: row.desc, link: row.link, username: row.username, displayName: row.displayName, loginData: getLoginData(req)}); //row.id + row.image
          } else {
             get404HTML(req,res);
             console.log("row is null");
@@ -135,21 +127,30 @@ app.get("/user/:username", function(req, res) {
          res.render("500error");
       } else {
          if(row != null) {
-            res.render("profile", {displayName: row.displayName, username: row.username, bio: row.bio});
-            // console.log(row);
+            db.all(`SELECT * FROM post WHERE username = "${req.params.username}" ORDER BY postTimeStamp DESC LIMIT 4;`, function(err, rows) {
+               if(err != null) {
+                  console.log("An error has occured getting a users recent posts from the database: " + err);
+                  res.render("500error");
+               } else {
+                  if(rows != null && rows.length > 0) {
+                     res.render("profile", {displayName: row.displayName, username: row.username, bio: row.bio, loginData: getLoginData(req), recentPosts: rows});
+                  } else {
+                     res.render("profile", {displayName: row.displayName, username: row.username, bio: row.bio, loginData: getLoginData(req), recentPosts: null});
+                  }
+               }
+            });
          } else {
             console.log("Null user: " + row);
             res.send("user does not exist");
          }
       }
    });
-
-
-   //res.render("profile", {displayName: "test", username: req.params.username, bio: "test2"});
 });
-// app.post("/user/:username", function(req, res) {
-//
-// });
+
+app.get("/user/:username/posts",function(req,res) {
+   res.send(req.params.username + "'s posts");
+});
+
 
 app.get("/login", function(req,res) {
    if(req.session.username) {
@@ -276,4 +277,12 @@ function hashPassword(password) {
    let hash = crypto.createHash("sha256");
    hash.update(password);
    return hash.digest("hex");
+}
+
+function getLoginData(req) {
+   let loginData = {loggedIn: false};
+   if(req.session.username) {
+      loginData = {loggedIn: true, username: req.session.username};
+   }
+   return loginData;
 }
