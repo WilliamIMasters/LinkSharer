@@ -232,12 +232,44 @@ app.post("/register", function(req,res) {
    //
 });
 
-app.get("/test", function(req, res) {
-   if(req.session.username) {
-      res.send(req.session.username.toString())
+app.get("/editAccount", function(req,res) {
+   if(getLoginData(req).loggedIn) {
+      db.get(`SELECT * FROM users WHERE username = "${req.session.username}";`, function(err, row) {
+         if(err != null) {
+            console.log("An error has occured getting data from the database: " + err);
+            res.render("500error");
+         } else {
+            if(row != null) {
+               res.render("editProfile", {displayName: row.displayName,bio: row.bio});
+            }
+         }
+      });
    } else {
-      res.send("Not logged in");
+      res.redirect("/login");
    }
+});
+app.post("/editAccount", function(req,res) {
+   db.get(`SELECT * FROM users WHERE username = "${req.session.username}";`, function(err, row) {
+      if(err != null) {
+         console.log("An error has occured getting data from the database: " + err);
+         res.render("500error");
+      } else {
+         if(row != null) {
+            // console.log(req.body.passwordConfirm);
+            if(hashPassword(req.body.passwordConfirm) == row.password) {
+               if(req.body.newBio.length > 0) {
+                  db.run(`UPDATE users SET bio = "${req.body.newBio}" WHERE username="${req.session.username}";`);
+               }
+               if(req.body.newDisplayName.length > 0) {
+                  db.run(`UPDATE users SET displayName = "${req.body.newDisplayName}" WHERE username="${req.session.username}";`);
+               }
+               res.redirect(`/user/${req.session.username}`);
+            } else {
+               res.render("/editAccount", {error: "Incorrect Password"});
+            }
+         }
+      }
+   });
 });
 
 // Must be last

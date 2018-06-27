@@ -1,0 +1,19 @@
+<html>
+   <head>
+
+   </head>
+   <body>
+      <form method="post">
+         <label>Display Name: <%= displayName %></label><br/>
+         <input type="text" name="newDisplayName" placeholder="Change display Name"></input><br/>
+         <label>Bio: <%= bio %></label><br/>
+         <input type="text" name="newBio" placeholder="Change Bio"></input><br/>
+         <label> Confirm password </label><br/>
+         <input type="password" name="passwordConfirm"></input><br/>
+         <input type="submit"></input><br/>
+         <% if(!(typeof error == "undefined")) { %>
+            <%= error %>
+         <% } %>
+      </form>
+   </body>
+</html>
