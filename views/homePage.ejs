@@ -89,7 +89,7 @@
                      <div class="card-body py-2 bg-dark text-light">
                         <h5 class="card-title mb-0 text-center text-truncate"><a href="/post/<%= post.postid %>" class="text-light"><%= post.title %></a></h5>
                      </div>
-                     <a href="/post/<%= post.postid %>" style="height: 255px;">
+                     <div onclick="location.href='/post/<%= post.postid %>';" style="height: 255px; cursor: pointer; background-color: gray">
 
                         <% if(post.link.substring(post.link.length -4).toLowerCase() == ".png" || post.link.substring(post.link.length -4).toLowerCase() == ".jpg" || post.link.substring(post.link.length -5).toLowerCase() == ".jpeg" || post.link.substring(post.link.length -4).toLowerCase() == ".gif"){ %>
                            <img class="card-img-top" src="<%= post.link %>" style="height: 255px;" alt="Opps"></img>
@@ -99,7 +99,7 @@
                                  <img class="card-img-top" src="<%= post.link %>" style="height: 255px;" alt="Opps"></img>
                                  <% } %>
 
-                     </a>
+                     </div>
                      <div class="card-body py-2" style="height: 48px;">
                         <p class="card-text mb-2 text-truncate">
                            <%= post.desc %>
