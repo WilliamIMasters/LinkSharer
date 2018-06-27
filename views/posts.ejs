@@ -2,7 +2,9 @@
 <html lang="en">
 
    <head>
-      <title> <%= title %> </title>
+      <title>
+         <%= title %>
+      </title>
       <!-- Meta Tags -->
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -55,15 +57,16 @@
                            </a>
                            <div class="dropdown-menu" aria-labelledby="dropdown">
                               <a class="dropdown-item" href="/user/<%= loginData.username %>">My Account</a>
+                              <a class="dropdown-item" href="/editAccount">Edit Account</a>
                               <a class="dropdown-item" href="/logout">logout</a>
                            </div>
-                        <% } else{ %>
+                           <% } else{ %>
                               <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Account</a>
                               <div class="dropdown-menu" aria-labelledby="dropdown">
                                  <a class="dropdown-item" href="/login">login</a>
                                  <a class="dropdown-item" href="/register">register</a>
                               </div>
-                        <% } %>
+                              <% } %>
                      </li>
                   </ul>
                </div>
@@ -91,11 +94,11 @@
 
                         <% if(post.link.substring(post.link.length -4).toLowerCase() == ".png" || post.link.substring(post.link.length -4).toLowerCase() == ".jpg" || post.link.substring(post.link.length -5).toLowerCase() == ".jpeg" || post.link.substring(post.link.length -4).toLowerCase() == ".gif"){ %>
                            <img class="card-img-top" src="<%= post.link %>" style="height: 255px;" alt="Opps"></img>
-                        <% } else if(post.link.substring(post.link.length -4).toLowerCase() == ".mp4" || post.link.substring(post.link.length -5).toLowerCase() == ".webm"){ %>
-                           <video class="card-img-top" src="<%= post.link %>" style="height: 255px;" loop autoplay></video>
-                        <% } else{ %>
-                           <img class="card-img-top" src="<%= post.link %>" style="height: 255px;" alt="Opps"></img>
-                        <% } %>
+                           <% } else if(post.link.substring(post.link.length -4).toLowerCase() == ".mp4" || post.link.substring(post.link.length -5).toLowerCase() == ".webm"){ %>
+                              <video class="card-img-top" src="<%= post.link %>" style="height: 255px;" loop autoplay></video>
+                              <% } else{ %>
+                                 <img class="card-img-top" src="<%= post.link %>" style="height: 255px;" alt="Opps"></img>
+                                 <% } %>
 
                      </div>
                      <div class="card-body py-2" style="height: 48px;">
@@ -110,7 +113,7 @@
                         </ul>
                      </div>
                   </div>
-               <% }); %>
+                  <% }); %>
 
             </div>
          </div>
